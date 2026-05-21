@@ -1,4 +1,3 @@
-alert("app.js jalan");
 import { db } from './firebase-config.js';
 
 import {
@@ -55,5 +54,3 @@ window.checkout = async function() {
   cart = [];
   renderCart();
 }
-
-console.log("APP READY");
