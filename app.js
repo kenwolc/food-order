@@ -2,55 +2,71 @@ import { db } from './firebase-config.js';
 
 import {
   collection,
-  addDoc,
-  Timestamp
+  addDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 let cart = [];
 
-window.tambahMenu = function(nama, harga) {
-  cart.push({ nama, harga });
-  renderCart();
-}
-
 function renderCart() {
-  const cartList = document.getElementById('cart-list');
-  const totalText = document.getElementById('total');
+
+  const cartList = document.getElementById("cart-list");
+  const totalText = document.getElementById("total");
 
   cartList.innerHTML = "";
 
   let total = 0;
 
-  cart.forEach(item => {
+  cart.forEach((item) => {
+
     total += item.harga;
 
-
     cartList.innerHTML += `
-      <p>${item.nama} - Rp ${item.harga}</p>
+      <div>
+        ${item.nama} - Rp ${item.harga}
+      </div>
     `;
+
   });
 
-  totalText.innerHTML = Total: Rp ${total};
+  totalText.innerText = `Total: Rp ${total}`;
+}
+
+window.tambahMenu = function(nama, harga) {
+
+  cart.push({
+    nama: nama,
+    harga: harga
+  });
+
+  renderCart();
 }
 
 window.checkout = async function() {
 
-  if(cart.length === 0) {
+  if(cart.length === 0){
     alert("Keranjang kosong");
     return;
   }
 
-  const total = cart.reduce((sum, item) => sum + item.harga, 0);
+  try {
 
-  await addDoc(collection(db, "orders"), {
-    items: cart,
-    total: total,
-    status: "Menunggu",
-    createdAt: Timestamp.now()
-  });
+    await addDoc(collection(db, "orders"), {
+      items: cart,
+      createdAt: new Date()
+    });
 
-  alert("Pesanan berhasil dibuat!");
+    alert("Pesanan berhasil!");
 
-  cart = [];
-  renderCart();
+    cart = [];
+
+    renderCart();
+
+  } catch(error){
+
+    console.error(error);
+
+    alert("Checkout gagal");
+
+  }
+
 }
