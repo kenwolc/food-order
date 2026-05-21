@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiosk Order</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1 style="color:black;">TES WEBSITE</h1>
+
+<header>
+  <h1>SELF ORDER KIOSK</h1>
+</header>
+
+<div class="menu-container">
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd">
+    <h2>Burger Beef</h2>
+    <p>Rp 35.000</p>
+    <button onclick="tambahMenu('Burger Beef',35000)">Tambah</button>
+  </div>
+
+  
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f">
+    <h2>Kentang Goreng</h2>
+    <p>Rp 18.000</p>
+    <button onclick="tambahMenu('Kentang Goreng',18000)">Tambah</button>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd">
+    <h2>Minuman Soda</h2>
+    <p>Rp 12.000</p>
+    <button onclick="tambahMenu('Minuman Soda',12000)">Tambah</button>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1562967916-eb82221dfb92">
+    <h2>Ayam Goreng</h2>
+    <p>Rp 28.000</p>
+    <button onclick="tambahMenu('Ayam Goreng',28000)">Tambah</button>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1550317138-10000687a72b">
+    <h2>Breakfast Wrap</h2>
+    <p>Rp 25.000</p>
+    <button onclick="tambahMenu('Breakfast Wrap',25000)">Tambah</button>
+  </div>
+
+</div>
+
+<div class="cart">
+  <h2>Keranjang</h2>
+  <div id="cart-list"></div>
+  <h3 id="total">Total: Rp 0</h3>
+
+  <button class="checkout" onclick="checkout()">
+    Checkout
+  </button>
+</div>
+
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
