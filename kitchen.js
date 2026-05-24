@@ -2,18 +2,24 @@ import { db } from './firebase-config.js';
 
 import {
   collection,
-  onSnapshot
+  getDocs,
+  deleteDoc,
+  doc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const orderList = document.getElementById("order-list");
+const orderList = document.getElementById("orders");
 
-onSnapshot(collection(db, "orders"), (snapshot) => {
+async function loadOrders() {
 
   orderList.innerHTML = "";
 
-  snapshot.forEach((doc) => {
+  const querySnapshot = await getDocs(collection(db, "orders"));
 
-    const data = doc.data();
+  let nomor = 1;
+
+  querySnapshot.forEach((documentData) => {
+
+    const data = documentData.data();
 
     let itemsHTML = "";
 
@@ -28,15 +34,51 @@ onSnapshot(collection(db, "orders"), (snapshot) => {
     });
 
     orderList.innerHTML += `
-      <div class="order-card">
-        <h3>Pesanan Baru</h3>
+
+      <div class="order-box">
+
+        <h2>Pesanan #${nomor}</h2>
 
         <ul>
           ${itemsHTML}
         </ul>
+
+        <p>
+          Total Item: ${data.items.length}
+        </p>
+
       </div>
+
     `;
+
+    nomor++;
 
   });
 
-});
+}
+
+window.refreshOrders = function() {
+  loadOrders();
+}
+
+window.resetOrders = async function() {
+
+  const konfirmasi = confirm("Reset semua pesanan?");
+
+  if(!konfirmasi) return;
+
+  const querySnapshot = await getDocs(collection(db, "orders"));
+
+  querySnapshot.forEach(async (documentData) => {
+
+    await deleteDoc(doc(db, "orders", documentData.id));
+
+  });
+
+  alert("Pesanan berhasil direset");
+
+  loadOrders();
+
+}
+
+loadOrders();
