@@ -6,7 +6,9 @@
   <title>Selamat Datang - Kiosk Order</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="landing-body"> <div class="landing-container">
+<body class="landing-body">
+
+  <div class="landing-container">
     <h1>Selamat Datang di Self Order Kiosk</h1>
     <p>Silakan pilih metode makan Anda:</p>
     
@@ -18,9 +20,7 @@
 
   <script>
     function pilihMetode(metode) {
-      // Menyimpan tipe order agar bisa dibaca oleh app.js di halaman menu
       localStorage.setItem('orderType', metode);
-      // Pindah ke halaman menu utama
       window.location.href = 'menu.html';
     }
   </script>

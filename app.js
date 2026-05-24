@@ -61,7 +61,6 @@ window.kurangQty = function(index){
   renderCart();
 }
 
-// SOLUSI: Menghubungkan tombol checkout index.html ke fungsi showPayment
 window.checkout = function(){
   window.showPayment();
 }
@@ -76,7 +75,6 @@ window.showPayment = function(){
   if (modal) {
     modal.style.display = 'flex';
   } else {
-    // SOLUSI: Jika di index.html (tidak ada modal), langsung proses bayar
     window.bayarSekarang();
   }
 }
@@ -90,15 +88,24 @@ window.bayarSekarang = async function(){
       createdAt: new Date()
     });
 
-    alert('Pembayaran berhasil! Pesanan dikirim ke dapur.');
     cart = [];
     renderCart();
 
     const modal = document.getElementById('payment-modal');
     if (modal) modal.style.display = 'none';
 
+    // Logika pop-up konfirmasi setelah klik 'Saya Sudah Bayar'
+    const tanyaUser = confirm('Pembayaran Berhasil!\n\nKlik "OK" jika ingin PESAN KEMBALI.\nKlik "Cancel" jika ingin SELESAI & KEMBALI KE LANDING PAGE.');
+
+    if (tanyaUser) {
+      alert('Silakan pilih menu baru!');
+    } else {
+      localStorage.clear();
+      window.location.href = 'index.html';
+    }
+
   } catch(error) {
     console.error(error);
-    alert('Firebase error: Periksa rules Firestore Anda');
+    alert('Firebase error: Gagal memproses data pembayaran.');
   }
 }
