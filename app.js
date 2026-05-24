@@ -9,7 +9,15 @@ let cart = [];
 
 const orderType = localStorage.getItem('orderType');
 
-document.getElementById('order-type').innerText = orderType;
+window.addEventListener('DOMContentLoaded', () => {
+
+  const orderText = document.getElementById('order-type');
+
+  if(orderText){
+    orderText.innerText = orderType || 'Dine In';
+  }
+
+});
 
 function renderCart(){
 
@@ -28,9 +36,7 @@ function renderCart(){
 
       <div class="cart-item">
 
-        <p>
-          ${item.nama}
-        </p>
+        <p>${item.nama}</p>
 
         <div class="qty-control">
 
@@ -114,21 +120,31 @@ window.showPayment = function(){
 
 window.bayarSekarang = async function(){
 
-  await addDoc(collection(db,'orders'),{
+  try{
 
-    items: cart,
-    orderType: orderType,
-    status: 'active',
-    createdAt: new Date()
+    await addDoc(collection(db,'orders'),{
 
-  });
+      items: cart,
+      orderType: orderType || 'Dine In',
+      status: 'active',
+      createdAt: new Date()
 
-  alert('Pembayaran berhasil');
+    });
 
-  cart = [];
+    alert('Pembayaran berhasil');
 
-  renderCart();
+    cart = [];
 
-  document.getElementById('payment-modal').style.display = 'none';
+    renderCart();
+
+    document.getElementById('payment-modal').style.display = 'none';
+
+  }catch(error){
+
+    console.error(error);
+
+    alert('Firebase error');
+
+  }
 
 }
