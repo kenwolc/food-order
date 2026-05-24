@@ -2,50 +2,41 @@ import { db } from './firebase-config.js';
 
 import {
   collection,
-  onSnapshot,
-  doc,
-  updateDoc
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const ordersDiv = document.getElementById('orders');
+const orderList = document.getElementById("order-list");
 
-onSnapshot(collection(db, 'orders'), (snapshot) => {
+onSnapshot(collection(db, "orders"), (snapshot) => {
 
-  ordersDiv.innerHTML = "";
+  orderList.innerHTML = "";
 
-  snapshot.forEach((docSnap) => {
+  snapshot.forEach((doc) => {
 
-    const data = docSnap.data();
+    const data = doc.data();
 
     let itemsHTML = "";
 
-    data.items.forEach(item => {
-      itemsHTML += <li>${item.nama}</li>;
+    data.items.forEach((item) => {
+
+      itemsHTML += `
+        <li>
+          ${item.nama} - Rp ${item.harga}
+        </li>
+      `;
+
     });
 
-    ordersDiv.innerHTML += `
-      <div class="cart">
-        <h2>Order ID: ${docSnap.id}</h2>
+    orderList.innerHTML += `
+      <div class="order-card">
+        <h3>Pesanan Baru</h3>
+
         <ul>
           ${itemsHTML}
         </ul>
-
-        <p>Total: Rp ${data.total}</p>
-        <p>Status: ${data.status}</p>
-
-        <button onclick="selesai('${docSnap.id}')">
-          Selesaikan
-        </button>
       </div>
     `;
+
   });
+
 });
-
-window.selesai = async function(id) {
-
-  const ref = doc(db, 'orders', id);
-
-  await updateDoc(ref, {
-    status: 'Selesai'
-  });
-}
