@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiosk Menu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>SELF ORDER KIOSK</h1>
+</header>
+
+<div class="category-title">
+  <h2>BURGER</h2>
+</div>
+
+<div class="menu-container">
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd">
+    <h2>Beef Burger</h2>
+    <p>Rp 35.000</p>
+    <button onclick="tambahMenu('Beef Burger',35000)">
+      Tambah
+    </button>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
+    <h2>Cheese Burger</h2>
+    <p>Rp 38.000</p>
+    <button onclick="tambahMenu('Cheese Burger',38000)">
+      Tambah
+    </button>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086">
+    <h2>Fish Burger</h2>
+    <p>Rp 36.000</p>
+    <button onclick="tambahMenu('Fish Burger',36000)">
+      Tambah
+    </button>
+  </div>
+
+</div>
+
+<div class="category-title">
+  <h2>KENTANG</h2>
+</div>
+
+<div class="menu-container">
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f">
+    <h2>Cheesy Fries</h2>
+    <p>Rp 22.000</p>
+    <button onclick="tambahMenu('Cheesy Fries',22000)">
+      Tambah
+    </button>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1630384060421-cb20d0e0649d">
+    <h2>Curly Fries</h2>
+    <p>Rp 24.000</p>
+    <button onclick="tambahMenu('Curly Fries',24000)">
+      Tambah
+    </button>
+  </div>
+
+</div>
+
+<div class="category-title">
+  <h2>MINUMAN</h2>
+</div>
+
+<div class="menu-container">
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97">
+    <h2>Coca Cola</h2>
+    <p>Rp 12.000</p>
+    <button onclick="tambahMenu('Coca Cola',12000)">
+      Tambah
+    </button>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1581006852262-e4307cf6283a">
+    <h2>Sprite</h2>
+    <p>Rp 12.000</p>
+    <button onclick="tambahMenu('Sprite',12000)">
+      Tambah
+    </button>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd">
+    <h2>Fanta</h2>
+    <p>Rp 12.000</p>
+    <button onclick="tambahMenu('Fanta',12000)">
+      Tambah
+    </button>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e">
+    <h2>Lemon Tea</h2>
+    <p>Rp 15.000</p>
+    <button onclick="tambahMenu('Lemon Tea',15000)">
+      Tambah
+    </button>
+  </div>
+
+</div>
+
+<div class="cart">
+
+  <h2>Keranjang</h2>
+
+  <p id="order-type"></p>
+
+  <div id="cart-list"></div>
+
+  <h3 id="total">Total: Rp 0</h3>
+
+  <button class="checkout" onclick="showPayment()">
+    Checkout
+  </button>
+
+</div>
+
+<div id="payment-modal" class="payment-modal">
+
+  <div class="payment-content">
+
+    <h2>SCAN QRIS</h2>
+
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=DummyQRISPayment" class="qris-img">
+
+    <button onclick="bayarSekarang()">
+      Saya Sudah Bayar
+    </button>
+
+  </div>
+
+</div>
+
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
