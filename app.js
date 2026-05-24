@@ -7,66 +7,128 @@ import {
 
 let cart = [];
 
-function renderCart() {
+const orderType = localStorage.getItem('orderType');
 
-  const cartList = document.getElementById("cart-list");
-  const totalText = document.getElementById("total");
+document.getElementById('order-type').innerText = orderType;
 
-  cartList.innerHTML = "";
+function renderCart(){
+
+  const cartList = document.getElementById('cart-list');
+  const totalText = document.getElementById('total');
+
+  cartList.innerHTML = '';
 
   let total = 0;
 
-  cart.forEach((item) => {
+  cart.forEach((item,index)=>{
 
-    total += item.harga;
+    total += item.harga * item.qty;
 
     cartList.innerHTML += `
-      <div>
-        ${item.nama} - Rp ${item.harga}
+
+      <div class="cart-item">
+
+        <p>
+          ${item.nama}
+        </p>
+
+        <div class="qty-control">
+
+          <button onclick="kurangQty(${index})">-</button>
+
+          <span>${item.qty}</span>
+
+          <button onclick="tambahQty(${index})">+</button>
+
+        </div>
+
       </div>
+
     `;
 
   });
 
   totalText.innerText = `Total: Rp ${total}`;
+
 }
 
-window.tambahMenu = function(nama, harga) {
+window.tambahMenu = function(nama,harga){
 
-  cart.push({
-    nama: nama,
-    harga: harga
-  });
+  const existing = cart.find(item => item.nama === nama);
 
-  renderCart();
-}
+  if(existing){
 
-window.checkout = async function() {
+    existing.qty++;
 
-  if(cart.length === 0){
-    alert("Keranjang kosong");
-    return;
-  }
+  }else{
 
-  try {
-
-    await addDoc(collection(db, "orders"), {
-      items: cart,
-      createdAt: new Date()
+    cart.push({
+      nama,
+      harga,
+      qty:1
     });
 
-    alert("Pesanan berhasil!");
+  }
 
-    cart = [];
+  renderCart();
 
-    renderCart();
+}
 
-  } catch(error){
+window.tambahQty = function(index){
 
-    console.error(error);
+  cart[index].qty++;
 
-    alert("Checkout gagal");
+  renderCart();
+
+}
+
+window.kurangQty = function(index){
+
+  if(cart[index].qty > 1){
+
+    cart[index].qty--;
+
+  }else{
+
+    cart.splice(index,1);
 
   }
+
+  renderCart();
+
+}
+
+window.showPayment = function(){
+
+  if(cart.length === 0){
+
+    alert('Keranjang kosong');
+
+    return;
+
+  }
+
+  document.getElementById('payment-modal').style.display = 'flex';
+
+}
+
+window.bayarSekarang = async function(){
+
+  await addDoc(collection(db,'orders'),{
+
+    items: cart,
+    orderType: orderType,
+    status: 'active',
+    createdAt: new Date()
+
+  });
+
+  alert('Pembayaran berhasil');
+
+  cart = [];
+
+  renderCart();
+
+  document.getElementById('payment-modal').style.display = 'none';
 
 }

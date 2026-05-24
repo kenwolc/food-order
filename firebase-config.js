@@ -1,10 +1,15 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyArAa3oiDkfDfLZo_qTxEDdLR3cIj96R1E",
   authDomain: "kiosk-makanan.firebaseapp.com",
+  databaseURL: "https://kiosk-makanan-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "kiosk-makanan",
   storageBucket: "kiosk-makanan.firebasestorage.app",
   messagingSenderId: "449589060342",
@@ -12,8 +17,6 @@ const firebaseConfig = {
   measurementId: "G-87630B3657"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
-
-export { db };
+const analytics = getAnalytics(app);

@@ -4,52 +4,79 @@ import {
   collection,
   getDocs,
   deleteDoc,
-  doc
+  doc,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const orderList = document.getElementById("orders");
+const ordersDiv = document.getElementById('orders');
+const completedDiv = document.getElementById('completed-orders');
 
-async function loadOrders() {
+async function loadOrders(){
 
-  orderList.innerHTML = "";
+  ordersDiv.innerHTML = '';
+  completedDiv.innerHTML = '';
 
-  const querySnapshot = await getDocs(collection(db, "orders"));
+  const querySnapshot = await getDocs(collection(db,'orders'));
 
   let nomor = 1;
 
-  querySnapshot.forEach((documentData) => {
+  querySnapshot.forEach((documentData)=>{
 
     const data = documentData.data();
 
-    let itemsHTML = "";
+    let itemsHTML = '';
 
-    data.items.forEach((item) => {
+    data.items.forEach((item)=>{
 
       itemsHTML += `
-        <li>
-          ${item.nama} - Rp ${item.harga}
-        </li>
+        <tr>
+          <td>${item.nama}</td>
+          <td>${item.qty}</td>
+        </tr>
       `;
 
     });
 
-    orderList.innerHTML += `
+    const html = `
 
-      <div class="order-box">
+      <div class="order-card">
 
         <h2>Pesanan #${nomor}</h2>
 
-        <ul>
-          ${itemsHTML}
-        </ul>
+        <p><b>${data.orderType}</b></p>
 
-        <p>
-          Total Item: ${data.items.length}
-        </p>
+        <table>
+
+          <thead>
+            <tr>
+              <th>Menu</th>
+              <th>Qty</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${itemsHTML}
+          </tbody>
+
+        </table>
+
+        ${data.status === 'active' ? `
+
+          <button class="done-btn" onclick="selesaikanOrder('${documentData.id}')">
+            Selesai
+          </button>
+
+        ` : ''}
 
       </div>
 
     `;
+
+    if(data.status === 'active'){
+      ordersDiv.innerHTML += html;
+    }else{
+      completedDiv.innerHTML += html;
+    }
 
     nomor++;
 
@@ -57,25 +84,33 @@ async function loadOrders() {
 
 }
 
-window.refreshOrders = function() {
+window.refreshOrders = function(){
   loadOrders();
 }
 
-window.resetOrders = async function() {
+window.selesaikanOrder = async function(id){
 
-  const konfirmasi = confirm("Reset semua pesanan?");
+  await updateDoc(doc(db,'orders',id),{
+    status:'completed'
+  });
+
+  loadOrders();
+
+}
+
+window.resetOrders = async function(){
+
+  const konfirmasi = confirm('Reset semua order?');
 
   if(!konfirmasi) return;
 
-  const querySnapshot = await getDocs(collection(db, "orders"));
+  const querySnapshot = await getDocs(collection(db,'orders'));
 
-  querySnapshot.forEach(async (documentData) => {
+  querySnapshot.forEach(async (documentData)=>{
 
-    await deleteDoc(doc(db, "orders", documentData.id));
+    await deleteDoc(doc(db,'orders',documentData.id));
 
   });
-
-  alert("Pesanan berhasil direset");
 
   loadOrders();
 
